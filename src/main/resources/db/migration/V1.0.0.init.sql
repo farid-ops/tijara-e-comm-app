@@ -1,6 +1,6 @@
-create schema if not exists ecomm;
+create schema if not exists tijara;
 
-create TABLE IF NOT EXISTS ecomm.product (
+create TABLE IF NOT EXISTS tijara.product (
      id uuid NOT NULL DEFAULT random_uuid(),
      name varchar(56) NOT NULL,
      description varchar(200),
@@ -10,20 +10,20 @@ create TABLE IF NOT EXISTS ecomm.product (
      PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.tag (
+create TABLE IF NOT EXISTS tijara.tag (
      id uuid NOT NULL DEFAULT random_uuid(),
      name varchar(20),
      PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.product_tag (
+create TABLE IF NOT EXISTS tijara.product_tag (
      product_id uuid NOT NULL DEFAULT random_uuid(),
      tag_id uuid NOT NULL,
-     FOREIGN KEY (product_id) REFERENCES product(id),
-     FOREIGN KEY(tag_id) REFERENCES tag(id)
+     FOREIGN KEY (product_id) REFERENCES tijara.product(id),
+     FOREIGN KEY(tag_id) REFERENCES tijara.tag(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.user (
+create TABLE IF NOT EXISTS tijara.user (
       id uuid NOT NULL DEFAULT random_uuid(),
       username varchar(16),
       password varchar(40),
@@ -35,7 +35,7 @@ create TABLE IF NOT EXISTS ecomm.user (
       PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.address (
+create TABLE IF NOT EXISTS tijara.address (
      id uuid NOT NULL DEFAULT random_uuid(),
      number varchar(24),
      residency varchar(32),
@@ -47,39 +47,39 @@ create TABLE IF NOT EXISTS ecomm.address (
      PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.user_address (
+create TABLE IF NOT EXISTS tijara.user_address (
       user_id uuid NOT NULL DEFAULT random_uuid(),
       address_id uuid NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES ecomm.user(id),
-      FOREIGN KEY(address_id) REFERENCES ecomm.address(id)
+      FOREIGN KEY (user_id) REFERENCES tijara.user(id),
+      FOREIGN KEY(address_id) REFERENCES tijara.address(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.payment (
+create TABLE IF NOT EXISTS tijara.payment (
      id uuid NOT NULL DEFAULT random_uuid(),
      authorized boolean,
      message varchar(64),
      PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.card (
+create TABLE IF NOT EXISTS tijara.card (
       id uuid NOT NULL DEFAULT random_uuid(),
       number varchar(16),
       user_id uuid NOT NULL UNIQUE,
       last_name varchar(16),
       expires varchar(5),
       cvv varchar(4),
-      FOREIGN KEY(user_id) REFERENCES ecomm.user(id),
+      FOREIGN KEY(user_id) REFERENCES tijara.user(id),
       PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.shipment (
+create TABLE IF NOT EXISTS tijara.shipment (
     id uuid NOT NULL DEFAULT random_uuid(),
     est_delivery_date timestamp,
     carrier varchar(24),
     PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.orders (
+create TABLE IF NOT EXISTS tijara.orders (
     id uuid NOT NULL DEFAULT random_uuid(),
     customer_id uuid NOT NULL,
     address_id uuid NOT NULL,
@@ -90,52 +90,52 @@ create TABLE IF NOT EXISTS ecomm.orders (
     shipment_id uuid,
     status varchar(24),
     PRIMARY KEY(id),
-    FOREIGN KEY(customer_id) REFERENCES ecomm.user(id),
-    FOREIGN KEY(address_id) REFERENCES ecomm.address(id),
-    FOREIGN KEY(card_id) REFERENCES ecomm.card(id),
-    FOREIGN KEY(payment_id) REFERENCES ecomm.payment(id),
-    FOREIGN KEY(shipment_id) REFERENCES ecomm.shipment(id),
+    FOREIGN KEY(customer_id) REFERENCES tijara.user(id),
+    FOREIGN KEY(address_id) REFERENCES tijara.address(id),
+    FOREIGN KEY(card_id) REFERENCES tijara.card(id),
+    FOREIGN KEY(payment_id) REFERENCES tijara.payment(id),
+    FOREIGN KEY(shipment_id) REFERENCES tijara.shipment(id),
     PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.item (
+create TABLE IF NOT EXISTS tijara.item (
     id uuid NOT NULL DEFAULT random_uuid(),
     product_id uuid NOT NULL,
     quantity numeric(8, 0),
     unit_price numeric(16, 4) NOT NULL,
-    FOREIGN KEY(product_id) REFERENCES ecomm.product(id),
+    FOREIGN KEY(product_id) REFERENCES tijara.product(id),
     PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.order_item (
+create TABLE IF NOT EXISTS tijara.order_item (
     id uuid NOT NULL DEFAULT random_uuid(),
     order_id uuid NOT NULL,
     item_id uuid NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES ecomm.orders(id),
-    FOREIGN KEY(item_id) REFERENCES ecomm.item(id)
+    FOREIGN KEY (order_id) REFERENCES tijara.orders(id),
+    FOREIGN KEY(item_id) REFERENCES tijara.item(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.authorization (
+create TABLE IF NOT EXISTS tijara.authorization (
     id uuid NOT NULL DEFAULT random_uuid(),
     order_id uuid NOT NULL DEFAULT random_uuid(),
     authorized boolean,
     time timestamp,
     message varchar(16),
     error varchar(24),
-    FOREIGN KEY (order_id) REFERENCES ecomm.orders(id),
+    FOREIGN KEY (order_id) REFERENCES tijara.orders(id),
     PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.cart (
+create TABLE IF NOT EXISTS tijara.cart (
     id uuid NOT NULL DEFAULT random_uuid(),
     user_id uuid NOT NULL DEFAULT random_uuid(),
-    FOREIGN KEY (user_id) REFERENCES ecomm.user(id),
+    FOREIGN KEY (user_id) REFERENCES tijara.user(id),
     PRIMARY KEY(id)
 );
 
-create TABLE IF NOT EXISTS ecomm.cart_item (
+create TABLE IF NOT EXISTS tijara.cart_item (
     cart_id uuid NOT NULL DEFAULT random_uuid(),
     item_id uuid NOT NULL DEFAULT random_uuid(),
-    FOREIGN KEY (cart_id) REFERENCES ecomm.cart(id),
-    FOREIGN KEY(item_id) REFERENCES ecomm.item(id)
+    FOREIGN KEY (cart_id) REFERENCES tijara.cart(id),
+    FOREIGN KEY(item_id) REFERENCES tijara.item(id)
 );
