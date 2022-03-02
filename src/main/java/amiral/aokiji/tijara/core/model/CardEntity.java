@@ -1,7 +1,6 @@
 package amiral.aokiji.tijara.core.model;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collections;
@@ -11,7 +10,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "CARD")
 @Getter
-@Setter
 public class CardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +31,29 @@ public class CardEntity {
 
     @OneToMany(mappedBy = "cardEntity", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderEntity> orderEntities = Collections.emptyList();
+
+    public CardEntity setNumber(String number){
+        this.number = number;
+        return this;
+    }
+
+    public CardEntity setExpires(String expires){
+        this.expires = expires;
+        return this;
+    }
+
+    public CardEntity setCvv(String cvv){
+        this.cvv = cvv;
+        return this;
+    }
+
+    public CardEntity setUserEntity(UserEntity userEntity){
+        this.userEntity = userEntity;
+        return this;
+    }
+
+    public CardEntity setOrderEntity(List<OrderEntity> orderEntities){
+        this.orderEntities = orderEntities;
+        return this;
+    }
 }

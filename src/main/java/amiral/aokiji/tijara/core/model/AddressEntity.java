@@ -16,7 +16,7 @@ public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", updatable = true, nullable = true)
+    @Column(name = "ID", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "NUMBER")
@@ -42,5 +42,45 @@ public class AddressEntity {
 
     @OneToMany(mappedBy = "addressEntity", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderEntity> orderEntities = Collections.emptyList();
+
+    public AddressEntity setNumber(String number){
+        this.number = number;
+        return this;
+    }
+
+    public AddressEntity setResidency(String residency){
+        this.residency = residency;
+        return this;
+    }
+
+    public AddressEntity setStreet(String street){
+        this.street = street;
+        return this;
+    }
+
+    public AddressEntity setCity(String city){
+        this.city = city;
+        return this;
+    }
+
+    public AddressEntity setState(String state){
+        this.state = state;
+        return this;
+    }
+
+    public AddressEntity setCountry(String country){
+        this.country = country;
+        return this;
+    }
+
+    public AddressEntity setPincode(String pincode){
+        this.pincode = pincode;
+        return this;
+    }
+
+    public AddressEntity setOrderEntity(List<OrderEntity> orderEntities){
+        this.orderEntities = orderEntities;
+        return this;
+    }
 
 }
