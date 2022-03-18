@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface CartRepository extends CrudRepository<CartEntity, UUID> {
 
-    @Query("select c from CardEntity c join c.userEntity u where u.id = :customerId")
-    Optional<CartEntity> findCustomerId(@Param("customerId") UUID id);
+    @Query("select c from CartEntity c join c.userEntity u where u.id = :customerId")
+    Optional<CartEntity> findCartByCustomerId(@Param("customerId") UUID id);
 }

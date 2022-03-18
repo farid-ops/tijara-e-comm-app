@@ -14,7 +14,6 @@ import java.util.UUID;
 @Table(name = "ITEM")
 @NoArgsConstructor
 @Getter
-@Setter
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +35,35 @@ public class ItemEntity {
 
     @ManyToMany(mappedBy = "itemEntities", fetch = FetchType.LAZY)
     private List<OrderEntity> orderEntities = Collections.emptyList();
+
+    public ItemEntity setId(UUID id){
+        this.id = id;
+        return this;
+    }
+
+    public ItemEntity setPrice(BigDecimal price){
+        this.price = price;
+        return this;
+    }
+
+    public ItemEntity setQuantity(int quantity){
+        this.quantity = quantity;
+        return this;
+    }
+
+    public ItemEntity setProductEntity(ProductEntity productEntity){
+        this.productEntity = productEntity;
+        return this;
+    }
+
+    public ItemEntity setCartEntity(List<CartEntity> cartEntities){
+        this.cartEntities = cartEntities;
+        return this;
+    }
+
+    public ItemEntity setOrderEntity(List<OrderEntity> orderEntities){
+        this.orderEntities = orderEntities;
+        return this;
+    }
+
 }

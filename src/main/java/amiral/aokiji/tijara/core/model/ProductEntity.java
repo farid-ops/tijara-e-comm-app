@@ -48,4 +48,40 @@ public class ProductEntity {
             inverseJoinColumns = @JoinColumn(name = "TAG_ID")
     )
     private List<TagEntity> tagEntities = Collections.emptyList();
+
+    public ProductEntity setId(UUID id){
+        this.id = id;
+        return this;
+    }
+
+    public ProductEntity setName(String name){
+        this.name = name;
+        return this;
+    }
+
+    public ProductEntity setDescription(String description){
+        this.description = description;
+        return this;
+    }
+
+    public ProductEntity setPrice(BigDecimal price){
+        this.price = price;
+        return this;
+    }
+
+    public ProductEntity setCount(int count){
+        this.count = count;
+        return this;
+    }
+
+    public ProductEntity setImageUrl(String imageUrl){
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public ProductEntity setTagEntity(List<TagEntity> tagEntities){
+        this.tagEntities = tagEntities;
+        return this;
+    }
+
 }

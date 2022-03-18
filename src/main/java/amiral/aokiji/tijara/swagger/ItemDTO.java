@@ -23,4 +23,19 @@ public class ItemDTO {
     @ApiModelProperty(value = "quantity", dataType = "int")
     private int quantity;
 
+
+    public ItemDTO setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public ItemDTO setPrice(BigDecimal price) {
+        this.price = price;
+        return this;
+    }
+
+    public ItemDTO setQuantity(int quantity) {
+        this.quantity = quantity;
+        return this;
+    }
 }
