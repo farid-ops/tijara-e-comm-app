@@ -1,0 +1,14 @@
+{
+  "library": "spring-mvc",
+  "dateLibrary": "java11",
+  "hideGenerationTimeStamp": true,
+  "modelPackage": "amiral/aokiji/tijara/core/model",
+  "apiPackage": "amiral/aokiji/tijara/api",
+  "invokerPackage": "amiral/aokiji/tijara/api",
+  "serialazableModel": true,
+  "useTags": true,
+  "useGzipFeature": true,
+  "hateoas": true,
+  "withXml": true,
+  "importMappings": {"Link": "org.springframework.hateoas.Link"}
+}
