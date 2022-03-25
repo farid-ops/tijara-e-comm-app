@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "USER")
@@ -60,4 +58,11 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<CardEntity> cardEntities = Collections.emptyList();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+    )
+    private Collection<Role> roles = new ArrayList<>();
 }
