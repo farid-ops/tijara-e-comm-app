@@ -26,7 +26,7 @@ public class CartEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "CART_ITEM_ID",
+            name = "CART_ID_ITEM_ID",
             joinColumns = @JoinColumn(name = "CART_ID"),
             inverseJoinColumns = @JoinColumn(name = "ITEM_ID")
     )
