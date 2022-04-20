@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemEntity toEntity(ItemDTO itemDTO);
+    ItemEntity mapItemDTOToItem(ItemDTO itemDTO);
 
-    List<ItemEntity> toEntityList(List<ItemDTO> itemDTOS);
+    List<ItemEntity> mapItemDTOSToItems(List<ItemDTO> itemDTOS);
 
-    ItemDTO toModel(ItemEntity itemEntity);
+    ItemDTO mapItemEntityToItemDTO(ItemEntity itemEntity);
 
-    List<ItemDTO> toModelList(List<ItemEntity> itemEntities);
+    List<ItemDTO> mapItemEntityToItemDTOS(List<ItemEntity> itemEntities);
 }
