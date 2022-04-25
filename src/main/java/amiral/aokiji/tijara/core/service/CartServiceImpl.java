@@ -10,9 +10,11 @@ import amiral.aokiji.tijara.swagger.ItemDTO;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +24,9 @@ public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
     private final ItemService itemService;
 
-    public CartServiceImpl(CartRepository cartRepository, UserRepository userRepository, ItemService itemService) {
+    public CartServiceImpl(CartRepository cartRepository,
+                           UserRepository userRepository,
+                           ItemService itemService) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.itemService = itemService;
@@ -30,22 +34,37 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<ItemDTO> addCartItemByCustomerId(String customerId, @Valid ItemDTO itemDTO) {
-        CartEntity cartEntity = this.getCartByCustomerId(customerId);
-
-        long count = cartEntity.getItemEntities().stream().filter(
-         i -> i.getProductEntity().getId().equals(UUID.fromString(itemDTO.getId()))
+        CartEntity entity = this.getCartByCustomerId(customerId);
+        long count = entity.getItemEntities().stream().filter(
+                identifiant->identifiant.getProductEntity().getId().equals(UUID.fromString(itemDTO.getId()))
         ).count();
-
-        if (count > 0)
-            throw new GenericAlreadyExistsException(String.format("Item with id (%s) already exists, you can update ",itemDTO.getId()));
-        cartEntity.getItemEntities().add(this.itemService.toEntity(itemDTO));
-
-        return this.itemService.toModelList(cartRepository.save(cartEntity).getItemEntities());
+        if (count > 0){
+            throw new GenericAlreadyExistsException("Item with Id (%s) already exist. you can update it"+itemDTO.getId());
+        }
+        entity.getItemEntities().add(this.itemService.mapItemDTOToItem(itemDTO));
+        return this.itemService.mapItemEntityToItemDTOS(this.cartRepository.save(entity).getItemEntities());
     }
 
     @Override
-    public List<ItemEntity> addOrReplaceItemByCustomerId(String customerId, @Valid ItemDTO itemDTO) {
-        return null;
+    public List<ItemDTO> addOrReplaceItemByCustomerId(String customerId, @Valid ItemDTO itemDTO) {
+        CartEntity entity = this.getCartByCustomerId(customerId);
+        List<ItemEntity> entities = Objects.nonNull(entity.getItemEntities()) ? entity.getItemEntities() : Collections.emptyList();
+
+        AtomicBoolean itemsExist = new AtomicBoolean(false);
+
+        entities.forEach(item->{
+            if(item.getProductEntity().getId().equals(UUID.fromString(itemDTO.getId()))){
+                item.setQuantity(itemDTO.getQuantity());
+                item.setPrice(itemDTO.getPrice());
+                itemsExist.set(true);
+            }
+        });
+
+        if (itemsExist.get()){
+            entities.add(itemService.mapItemDTOToItem(itemDTO));
+        }
+
+        return itemService.mapItemEntityToItemDTOS(this.cartRepository.save(entity).getItemEntities());
     }
 
     @Override
@@ -58,24 +77,25 @@ public class CartServiceImpl implements CartService {
     public void deleteItemFromCart(String customerId, String itemId) {
         CartEntity cartEntity = this.getCartByCustomerId(customerId);
         List<ItemEntity> itemEntities = cartEntity.getItemEntities().stream()
-                .filter(item -> !item.getProductEntity().getId().equals(UUID.fromString(itemId))).collect(Collectors.toList());
+                .filter(i->!i.getProductEntity().getId().equals(UUID.fromString(itemId))).collect(Collectors.toList());
         cartEntity.setItemEntities(itemEntities);
         this.cartRepository.save(cartEntity);
     }
 
     @Override
     public CartEntity getCartByCustomerId(String customerId) {
-        CartEntity cartEntity = this.cartRepository.findCartByCustomerId(UUID.fromString(customerId)).orElse(new CartEntity());
-        if (Objects.isNull(cartEntity.getUserEntity())){
+        CartEntity cartEntity = this.cartRepository.findCartByCustomerId(UUID.fromString(customerId))
+                .orElse(new CartEntity());
+        if (Objects.isNull(cartEntity.getUserEntity()))
             cartEntity.setUserEntity(this.userRepository.findById(UUID.fromString(customerId))
-                    .orElseThrow(()->new CustomerNotFoundException(String.format("-%s",customerId))));
-        }
-        return cartEntity;
+            .orElseThrow(()-> new CustomerNotFoundException(String.format(" ~ %s", customerId))));
+        return null;
     }
 
     @Override
-    public List<ItemEntity> getCartItemByCustomerId(String customerId) {
-        return null;
+    public List<ItemDTO> getCartItemByCustomerId(String customerId) {
+        CartEntity cartEntity = this.getCartByCustomerId(customerId);
+        return itemService.mapItemEntityToItemDTOS(cartEntity.getItemEntities());
     }
 
     @Override

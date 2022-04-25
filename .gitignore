@@ -8,3 +8,15 @@
 out
 gen
 /HELP.md
+/target/classes/amiral/aokiji/tijara/swagger/CardDTO.class
+/target/classes/amiral/aokiji/tijara/core/service/CardService.class
+/target/classes/amiral/aokiji/tijara/core/service/CardServiceImpl.class
+/target/classes/amiral/aokiji/tijara/swagger/CartDTO.class
+/target/classes/amiral/aokiji/tijara/core/service/CartService.class
+/target/classes/amiral/aokiji/tijara/core/service/CartServiceImpl.class
+/target/classes/amiral/aokiji/tijara/exceptions/CustomerNotFoundException.class
+/target/classes/amiral/aokiji/tijara/exceptions/GenericAlreadyExistsException.class
+/target/classes/amiral/aokiji/tijara/swagger/ItemDTO.class
+/target/classes/amiral/aokiji/tijara/core/service/ItemService.class
+/target/classes/amiral/aokiji/tijara/core/service/ItemServiceImpl.class
+/target/classes/amiral/aokiji/tijara/swagger/UserDTO.class

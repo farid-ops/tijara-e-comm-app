@@ -11,7 +11,7 @@ public interface CartService {
 
     List<ItemDTO> addCartItemByCustomerId(String customerId, @Valid ItemDTO itemDTO);
 
-    List<ItemEntity> addOrReplaceItemByCustomerId(String customerId, @Valid ItemDTO itemDTO);
+    List<ItemDTO> addOrReplaceItemByCustomerId(String customerId, @Valid ItemDTO itemDTO);
 
     void deleteCart(String customerId);
 
@@ -19,7 +19,7 @@ public interface CartService {
 
     CartEntity getCartByCustomerId(String customerId);
 
-    List<ItemEntity> getCartItemByCustomerId(String customerId);
+    List<ItemDTO> getCartItemByCustomerId(String customerId);
 
     ItemEntity getCartItemByItemId(String customerId, String itemId);
 }
