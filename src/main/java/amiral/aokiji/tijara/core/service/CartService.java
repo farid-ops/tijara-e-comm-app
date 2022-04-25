@@ -1,7 +1,6 @@
 package amiral.aokiji.tijara.core.service;
 
 import amiral.aokiji.tijara.core.model.CartEntity;
-import amiral.aokiji.tijara.core.model.ItemEntity;
 import amiral.aokiji.tijara.swagger.ItemDTO;
 
 import javax.validation.Valid;
@@ -21,5 +20,5 @@ public interface CartService {
 
     List<ItemDTO> getCartItemByCustomerId(String customerId);
 
-    ItemEntity getCartItemByItemId(String customerId, String itemId);
+    ItemDTO getCartItemByItemId(String customerId, String itemId);
 }

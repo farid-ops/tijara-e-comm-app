@@ -6,6 +6,7 @@ import amiral.aokiji.tijara.core.repository.CartRepository;
 import amiral.aokiji.tijara.core.repository.UserRepository;
 import amiral.aokiji.tijara.exceptions.CustomerNotFoundException;
 import amiral.aokiji.tijara.exceptions.GenericAlreadyExistsException;
+import amiral.aokiji.tijara.exceptions.ItemNotFoundException;
 import amiral.aokiji.tijara.swagger.ItemDTO;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
+import static org.springframework.objenesis.instantiator.util.UnsafeUtils.getUnsafe;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -89,7 +93,7 @@ public class CartServiceImpl implements CartService {
         if (Objects.isNull(cartEntity.getUserEntity()))
             cartEntity.setUserEntity(this.userRepository.findById(UUID.fromString(customerId))
             .orElseThrow(()-> new CustomerNotFoundException(String.format(" ~ %s", customerId))));
-        return null;
+        return cartEntity;
     }
 
     @Override
@@ -99,7 +103,20 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public ItemEntity getCartItemByItemId(String customerId, String itemId) {
-        return null;
+    public ItemDTO getCartItemByItemId(String customerId, String itemId) {
+        CartEntity entity = this.getCartByCustomerId(customerId);
+        AtomicReference<ItemEntity> items = new AtomicReference<>();
+        entity.getItemEntities().forEach(
+                i->{
+                    if (i.getProductEntity().getId().equals(UUID.fromString(itemId))){
+                        items.set(i);
+                    }
+                }
+
+        );
+        if (Objects.isNull(items.get())){
+            getUnsafe().throwException(new ItemNotFoundException(String.format(" - %s", itemId)));
+        }
+        return this.itemService.mapItemEntityToItemDTO(items.get());
     }
 }
