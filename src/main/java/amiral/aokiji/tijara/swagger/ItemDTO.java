@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @ApiModel(value = "Item entity")
 public class ItemDTO {
 
-    @ApiModelProperty(value = "item id", dataType = "java.lang.String")
+    @ApiModelProperty(value = "id", dataType = "java.lang.String")
     private String id;
 
     @ApiModelProperty(value = "price", dataType = "java.math.BigDecimal")

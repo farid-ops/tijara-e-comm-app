@@ -89,7 +89,6 @@ create TABLE IF NOT EXISTS tijara.orders (
     payment_id uuid,
     shipment_id uuid,
     status varchar(24),
-    PRIMARY KEY(id),
     FOREIGN KEY(customer_id) REFERENCES tijara.user(id),
     FOREIGN KEY(address_id) REFERENCES tijara.address(id),
     FOREIGN KEY(card_id) REFERENCES tijara.card(id),
