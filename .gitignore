@@ -20,3 +20,7 @@ gen
 /target/classes/amiral/aokiji/tijara/core/service/ItemService.class
 /target/classes/amiral/aokiji/tijara/core/service/ItemServiceImpl.class
 /target/classes/amiral/aokiji/tijara/swagger/UserDTO.class
+/target/classes/amiral/aokiji/tijara/exceptions/ItemNotFoundException.class
+/target/classes/amiral/aokiji/tijara/swagger/OrderDTO.class
+/target/classes/amiral/aokiji/tijara/core/service/OrderService.class
+/target/classes/amiral/aokiji/tijara/core/service/OrderServiceImpl.class
